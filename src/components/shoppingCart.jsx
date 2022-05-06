@@ -1,28 +1,28 @@
-import React from 'react'
 
 import Product from './product'
 
 const ShoppingCart = props => {
+  const {products, onReset, onIncrement, onDelete} = props
   return (
-    <React.Fragment>
+    <>
     <div className='container'>
       <h1>Shopping Cart</h1>
       <button
-        onClick={props.onReset}
+        onClick={onReset}
         className="btn btn-secondary btn-sm m-2"
       >
         Reset
       </button>
-      {props.products.map(product => (
+      {products.map(product => (
         <Product
           key={product.id}
-          incrementHandle={props.onIncrement}
+          incrementHandle={onIncrement}
           product={product}
-          handelDelete={props.onDelete}
+          handelDelete={onDelete}
         />
       ))}
     </div>
-    </React.Fragment>
+    </>
   )
 }
 

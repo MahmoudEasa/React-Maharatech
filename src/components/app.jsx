@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-// import { useLocation, useParams, useMatch } from 'react-router-dom';
 
 
 import Navbar from './navbar';
@@ -9,94 +8,91 @@ import About from './about';
 import Contact from './contact';
 import Home from './home';
 import ProductDetails from './productDetails';
+import NotFound from './notFound';
+import Team from "./team"
+import Company from "./company"
+import Menu from './Menu';
 
 
-class App extends Component {
-  state = {
+const App = () => {
+  const [state, setState] = useState({
     products: [
-      {
-        id: 1,
-        name: "Burger",
-        count: 2,
-      },
-      {
-        id: 2,
-        name: "Fries",
-        count: 0,
-      },
-      {
-        id: 3,
-        name: "Cola",
-        count: 3,
-      },
-    ]
-  }
+      {name: "Burger", count: 0, price: 30, id: 1, isInCart: false},
+      {name: "Fries", count: 0, price: 20, id: 2, isInCart: false},
+      {name: "Cola", count: 0, price: 10, id: 3, isInCart: false},
+    ],
+  })
 
-  handelDelete = product => {
+  const handleAdd = (product) => {
     // Clone
+    let products = [...state.products]
+    let index = products.indexOf(product)
+    products[index] = {...products[index]}
     // Edit
-    const newProducts = this.state.products.filter(p => p.id !== product.id);
-    // Set state
-    this.setState(() => ({
-      products: newProducts
-    }))
+    products[index].isInCart = !products[index].isInCart
+    // Set State
+    setState({products})
   }
 
-  handleReset = () => {
+  const handleReset = () => {
     // Clone
-    let products = [...this.state.products];
+    let products = [...state.products];
     // Edit
     products = products.map(p => {
       p.count = 0;
       return p;
     });
     // Set State
-    this.setState(() => ({
-      products: products
-    }))
+    setState({products})
   }
 
-  incrementHandle = (product) => {
+  const incrementHandle = (product) => {
     // Clone
-    let products = [...this.state.products];
+    let products = [...state.products];
     const index = products.indexOf(product);
     products[index] = {...products[index]};
     // Edit
     products[index].count++;
     // Set State
-    this.setState(() => ({
-      products
-    }))
+    setState({products})
   }
-  render() {
-    // const { id, name } = useParams();
-    // const product = products.find((p) => p._id === (id));
     return (
       <React.Fragment>
-        <Navbar productsCount={this.state.products.filter(p => p.count > 0).length} />
+        <Navbar productsCount={state.products.filter(p => p.count > 0).length} />
         <main className="container">
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/about' element={<About />} />
+            <Route path='/home' element={<Home />}/>
+            <Route path='about' element={<About />}>
+              <Route path='team' element={<Team />} />
+              <Route path='company' element={<Company />} />
+            </Route>
             <Route path='/contact' element={<Contact />} />
             <Route path='/products/:id' element={
                     <ProductDetails
-                      products={this.state.products}
+                      products={state.products}
                     />} />
             <Route path='/shopping' element={
               <ShoppingCart
-                onReset={this.handleReset}
-                products={this.state.products}
-                onIncrement={this.incrementHandle}
-                onDelete={this.handelDelete}
+                products={state.products.filter(p => p.isInCart)}
+                onIncrement={incrementHandle}
+                onDelete={handleAdd}
+                onReset={handleReset}
               />} 
             />
+            <Route path='/menu'
+                    element={<Menu
+                      onClick={handleAdd}
+                        products={state.products}
+                      />
+                    }
+            />
+            <Route path='*' element={<NotFound />}/>
           </Routes>
           
         </main>
       </React.Fragment>
     )
-  }
 }
 
 export default App

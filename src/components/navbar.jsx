@@ -1,25 +1,27 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const Navbar = props => {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
-          <Link to='/' className="navbar-brand">Navbar</Link>
+          <NavLink to='/' className="navbar-brand">Navbar</NavLink>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link to='/' className="nav-link active">Home</Link>
+                <NavLink to='/' className="nav-link">Home</NavLink>
               </li>
               <li className="nav-item">
-                <Link to='/about' className="nav-link">About</Link>
+                <NavLink to='/about' className="nav-link">About</NavLink>
               </li>
               <li className="nav-item">
-                <Link to='/contact' className="nav-link">Contact</Link>
+                <NavLink to='/contact' className="nav-link">Contact</NavLink>
               </li>
               <li className="nav-item">
-                <Link to='/shopping' className="nav-link">Shopping Cart</Link>
+                <NavLink to='/menu' className="nav-link">Menu</NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to='/shopping' className="nav-link">Shopping Cart</NavLink>
               </li>
             </ul>
           </div>
