@@ -12,6 +12,7 @@ import NotFound from './notFound';
 import Team from "./team"
 import Company from "./company"
 import Menu from './Menu';
+import Login from './login';
 
 
 const App = () => {
@@ -87,6 +88,7 @@ const App = () => {
                       />
                     }
             />
+            <Route path='/login' element={<Login />}/>
             <Route path='*' element={<NotFound />}/>
           </Routes>
           
