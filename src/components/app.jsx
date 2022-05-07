@@ -11,55 +11,46 @@ import Menu from "./Menu";
 import Login from "./login";
 
 const App = () => {
-  const [state, setState] = useState({
-    products: [
-      { name: "Burger", count: 0, price: 30, id: 1, isInCart: false },
-      { name: "Fries", count: 0, price: 20, id: 2, isInCart: false },
-      { name: "Cola", count: 0, price: 10, id: 3, isInCart: false },
-    ],
-  });
-
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/products")
       .then((data) => setProducts(data.data));
-    console.log(products);
   }, []);
 
   const handleAdd = (product) => {
     // Clone
-    let products = [...products];
-    let index = products.indexOf(product);
-    products[index] = { ...products[index] };
+    let productsAll = [...products];
+    let index = productsAll.indexOf(product);
+    productsAll[index] = { ...productsAll[index] };
     // Edit
-    products[index].isInCart = !products[index].isInCart;
+    productsAll[index].isInCart = !productsAll[index].isInCart;
     // Set State
-    setProducts({ products });
+    setProducts(productsAll);
   };
 
   const handleReset = () => {
     // Clone
-    let products = [...products];
+    let productsAll = [...products];
     // Edit
-    products = products.map((p) => {
+    productsAll = productsAll.map((p) => {
       p.count = 0;
       return p;
     });
     // Set State
-    setProducts({ products });
+    setProducts(productsAll);
   };
 
   const incrementHandle = (product) => {
     // Clone
-    let products = [...products];
-    const index = products.indexOf(product);
-    products[index] = { ...products[index] };
+    let productsAll = [...products];
+    const index = productsAll.indexOf(product);
+    productsAll[index] = { ...productsAll[index] };
     // Edit
-    products[index].count++;
+    productsAll[index].count++;
     // Set State
-    setProducts({ products });
+    setProducts(productsAll);
   };
   return (
     <React.Fragment>
