@@ -11,21 +11,6 @@ const Navbar = (props) => {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <NavLink to="/" className="nav-link">
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/about" className="nav-link">
-                  About
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink to="/contact" className="nav-link">
-                  Contact
-                </NavLink>
-              </li>
-              <li className="nav-item">
                 <NavLink to="/menu" className="nav-link">
                   Menu
                 </NavLink>
@@ -33,6 +18,11 @@ const Navbar = (props) => {
               <li className="nav-item">
                 <NavLink to="/shopping" className="nav-link">
                   Shopping Cart
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/admin" className="nav-link">
+                  Admin
                 </NavLink>
               </li>
               <li className="nav-item">
