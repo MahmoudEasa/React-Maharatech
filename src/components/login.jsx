@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import Joi, { schema } from "joi-browser";
 
 const Login = () => {
-  const [state, setState] = useState({
-    email: "",
-    password: "",
-    errors: {},
-  });
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [errors, seterrors] = useState({});
 
-  const err = (schema = {
+  schema = {
     email: Joi.string().email().required(),
     password: Joi.string().required(),
-  });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,12 +24,15 @@ const Login = () => {
 
   const validate = () => {
     const errors = {};
-    const allState = { ...state };
-    delete allState.errors;
-    const res = Joi.validate(allState, err, { abortEarly: false });
+
+    const res = Joi.validate({ email, password }, schema, {
+      abortEarly: false,
+    });
+
+    // console.log(res);
 
     if (res.error === null) {
-      setState({ errors: {} });
+      seterrors({});
       return null;
     }
 
@@ -40,16 +41,17 @@ const Login = () => {
     }
 
     // Set State
-    setState({ errors });
+    seterrors(errors);
   };
 
   const handleChange = (e) => {
     // Clone
-    let allState = { ...state };
+    let allState = { email, password };
     // Edit
     allState[e.currentTarget.name] = e.currentTarget.value;
     // Set State
-    setState(allState);
+    setemail(allState.email);
+    setpassword(allState.password);
   };
   return (
     <>
@@ -61,7 +63,7 @@ const Login = () => {
           </label>
           <input
             name="email"
-            value={state.email}
+            value={email}
             onChange={handleChange}
             type="email"
             placeholder="Your Email"
@@ -72,8 +74,8 @@ const Login = () => {
           <div id="emailHelp" className="form-text">
             We'll never share your email with anyone else.
           </div>
-          {state.errors.email && (
-            <div className="alert alert-danger">{state.errors.email}</div>
+          {errors.email && (
+            <div className="alert alert-danger">{errors.email}</div>
           )}
         </div>
         <div className="mb-3">
@@ -82,7 +84,7 @@ const Login = () => {
           </label>
           <input
             name="password"
-            value={state.password}
+            value={password}
             onChange={handleChange}
             type="password"
             placeholder="Password"
@@ -90,8 +92,8 @@ const Login = () => {
             id="exampleInputPassword1"
           />
         </div>
-        {state.errors.password && (
-          <div className="alert alert-danger">{state.errors.password}</div>
+        {errors.password && (
+          <div className="alert alert-danger">{errors.password}</div>
         )}
         <div className="mb-3 form-check">
           <input
