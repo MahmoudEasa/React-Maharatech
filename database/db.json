@@ -1,39 +1,25 @@
 {
   "products": [
     {
-      "id": 1,
       "name": "Burger",
-      "count": 0,
       "price": 30,
-      "isInCart": false
+      "count": 0,
+      "isInCart": true,
+      "id": 1
     },
     {
-      "id": 2,
       "name": "Fries",
-      "count": 0,
       "price": 20,
-      "isInCart": false
+      "count": 0,
+      "isInCart": true,
+      "id": 2
     },
     {
-      "id": 3,
       "name": "Cola",
-      "count": 0,
       "price": 10,
-      "isInCart": false
-    },
-    {
-      "name": "Typing",
-      "price": "2000",
       "count": 0,
-      "isInCart": false,
-      "id": 4
-    },
-    {
-      "name": "Ice",
-      "price": "1000",
-      "count": 0,
-      "isInCart": false,
-      "id": 5
+      "isInCart": true,
+      "id": 3
     },
     {
       "name": "Medum Burger",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 import Navbar from "./navbar";
 import ShoppingCart from "./shoppingCart";
@@ -18,26 +19,28 @@ const App = () => {
   useEffect(() => {
     axios
       .get("http://localhost:5000/products")
-      .then((data) => setProducts(data.data));
-  });
+      .then((res) => setProducts(res.data));
+  }, []);
 
   const handleAdd = (product) => {
-    // Clone
-    let productsAll = [...products];
-    let index = productsAll.indexOf(product);
-    productsAll[index] = { ...productsAll[index] };
-    // Edit
-    productsAll[index].isInCart = !productsAll[index].isInCart;
-    // Set State
-    setProducts(productsAll);
+    // let allProducts = axios.put("http://localhost:5000/products");
+    let allProducts = [...products];
+    let index = allProducts.indexOf(product);
+    allProducts[index] = { ...allProducts[index] };
+    allProducts[index].isInCart = !allProducts[index].isInCart;
+    setProducts(allProducts);
   };
 
   const handleDelete = (e) => {
+    const oldProducts = [...products];
+
     const productsFilter = products.filter((p) => p.id !== e.id);
-    axios
-      .delete(`http://localhost:5000/products/${e.id}`)
-      .then(() => setProducts(productsFilter))
-      .then(() => console.log("Delete Successful"));
+    setProducts(productsFilter);
+
+    axios.delete(`http://localhost:5000/products/${e.id}`).catch(() => {
+      toast.error("Cant Delete");
+      setProducts(oldProducts);
+    });
   };
 
   const handleReset = () => {
@@ -65,6 +68,7 @@ const App = () => {
   return (
     <React.Fragment>
       <Navbar productsCount={products.filter((p) => p.count > 0).length} />
+      <ToastContainer />
       <main className="container">
         <Routes>
           <Route path="/" element={<Home />} />

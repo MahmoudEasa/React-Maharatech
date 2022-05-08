@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddProduct = (props) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const id = useParams().id;
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (id !== "new") {
+      axios.get(`http://localhost:5000/products/${id}`).then((res) => {
+        setName(res.data.name);
+        setPrice(res.data.price);
+      });
+    }
+  }, []);
+
+  const handleAdd = (e) => {
     e.preventDefault();
 
     if (name.length > 0 && price.length > 0) {
@@ -21,10 +32,27 @@ const AddProduct = (props) => {
         })
         .then(() => navigate("/admin", { replace: true }));
     } else {
-      alert("Please Write All Data");
+      toast("Please Write All Data");
     }
+  };
 
-    console.log("Submit");
+  const handleEdit = (e) => {
+    e.preventDefault();
+
+    const data = {
+      name,
+      price,
+      count: 0,
+      isInCart: false,
+    };
+
+    if (name.length > 0 && price.length > 0) {
+      axios
+        .put(`http://localhost:5000/products/${id}`, data)
+        .then(() => navigate("/admin", { replace: true }));
+    } else {
+      toast("Please Write All Data");
+    }
   };
 
   const handleChange = (e) => {
@@ -36,8 +64,9 @@ const AddProduct = (props) => {
   };
   return (
     <>
-      <h1>AddProduct</h1>
-      <form onSubmit={handleSubmit}>
+      <ToastContainer />
+      <h1>{id === "new" ? "Add Product" : "Edit Product"}</h1>
+      <form onSubmit={id === "new" ? handleAdd : handleEdit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name
@@ -67,7 +96,7 @@ const AddProduct = (props) => {
           />
         </div>
         <button type="submit" className="btn btn-primary">
-          Add
+          {id === "new" ? "Add" : "Edit"}
         </button>
       </form>
     </>
