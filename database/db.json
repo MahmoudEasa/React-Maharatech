@@ -22,11 +22,25 @@
       "isInCart": false
     },
     {
-      "id": 4,
-      "name": "Water",
+      "name": "Typing",
+      "price": "2000",
       "count": 0,
-      "price": 5,
-      "isInCart": false
+      "isInCart": false,
+      "id": 4
+    },
+    {
+      "name": "Ice",
+      "price": "1000",
+      "count": 0,
+      "isInCart": false,
+      "id": 5
+    },
+    {
+      "name": "Medum Burger",
+      "price": "35",
+      "count": 0,
+      "isInCart": false,
+      "id": 6
     }
   ]
 }

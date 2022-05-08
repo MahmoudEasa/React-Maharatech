@@ -9,6 +9,8 @@ import ProductDetails from "./productDetails";
 import NotFound from "./notFound";
 import Menu from "./Menu";
 import Login from "./login";
+import Admin from "./Admin";
+import AddProduct from "./AddProduct";
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -17,7 +19,7 @@ const App = () => {
     axios
       .get("http://localhost:5000/products")
       .then((data) => setProducts(data.data));
-  }, []);
+  });
 
   const handleAdd = (product) => {
     // Clone
@@ -28,6 +30,14 @@ const App = () => {
     productsAll[index].isInCart = !productsAll[index].isInCart;
     // Set State
     setProducts(productsAll);
+  };
+
+  const handleDelete = (e) => {
+    const productsFilter = products.filter((p) => p.id !== e.id);
+    axios
+      .delete(`http://localhost:5000/products/${e.id}`)
+      .then(() => setProducts(productsFilter))
+      .then(() => console.log("Delete Successful"));
   };
 
   const handleReset = () => {
@@ -78,6 +88,11 @@ const App = () => {
             path="/menu"
             element={<Menu onClick={handleAdd} products={products} />}
           />
+          <Route
+            path="/admin"
+            element={<Admin products={products} handleDelete={handleDelete} />}
+          />
+          <Route path="/addProduct/:id" element={<AddProduct />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
