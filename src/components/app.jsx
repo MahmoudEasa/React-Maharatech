@@ -23,12 +23,28 @@ const App = () => {
   }, []);
 
   const handleAdd = (product) => {
-    // let allProducts = axios.put("http://localhost:5000/products");
+    const oldProducts = [...products];
+    // Clone
     let allProducts = [...products];
+    // Edit
     let index = allProducts.indexOf(product);
     allProducts[index] = { ...allProducts[index] };
     allProducts[index].isInCart = !allProducts[index].isInCart;
+    // Set State
     setProducts(allProducts);
+    axios
+      .put(`http://localhost:5000/products/${product.id}`, {
+        isInCart: !product.isInCart,
+        name: product.name,
+        price: product.price,
+        count: product.count,
+      })
+      // .then((res) => (allProducts[index] = res.data))
+      // .then(() => setProducts(allProducts))
+      .catch(() => {
+        product.isInCart ? toast("Cant Remove") : toast("Cant Add");
+        setProducts(oldProducts);
+      });
   };
 
   const handleDelete = (e) => {
