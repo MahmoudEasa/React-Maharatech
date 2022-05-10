@@ -27,6 +27,20 @@
       "count": 0,
       "isInCart": false,
       "id": 6
+    },
+    {
+      "name": "Typing",
+      "price": "20",
+      "count": 0,
+      "isInCart": false,
+      "id": 7
+    },
+    {
+      "name": "Ice",
+      "price": "40",
+      "count": 0,
+      "isInCart": false,
+      "id": 8
     }
   ]
 }

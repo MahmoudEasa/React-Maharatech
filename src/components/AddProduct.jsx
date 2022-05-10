@@ -30,7 +30,8 @@ const AddProduct = (props) => {
           count: 0,
           isInCart: false,
         })
-        .then(() => navigate("/admin", { replace: true }));
+        .then(() => navigate("/admin", { replace: true }))
+        .then(() => window.location.reload());
     } else {
       toast("Please Write All Data");
     }
@@ -49,7 +50,8 @@ const AddProduct = (props) => {
     if (name.length > 0 && price.length > 0) {
       axios
         .put(`http://localhost:5000/products/${id}`, data)
-        .then(() => navigate("/admin", { replace: true }));
+        .then(() => navigate("/admin", { replace: true }))
+        .then(() => window.location.reload());
     } else {
       toast("Please Write All Data");
     }
