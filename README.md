@@ -2,6 +2,15 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## To Run The App
+
+1. Clone the repo: `git clone https://github.com/MahmoudEasa/React-Maharatech.git`
+2. Go to the directory: `cd React-Maharatech`
+3. To run the server, go to: `cd database`
+4. To run the server: `json-server --watch db.json`
+5. To run the app, in a new Terminal go to: `cd React-Maharatech`
+6. To run the app: `npm start` Or `yarn start`
+
 ## Available Scripts
 
 In the project directory, you can run:
