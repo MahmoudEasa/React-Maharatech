@@ -1,7 +1,7 @@
 import Product from "./product";
 
 const ShoppingCart = (props) => {
-  const { products, onReset, onIncrement, onDelete } = props;
+  const { products, onReset, onIncrement, onDelete, onDecrement } = props;
   return (
     <>
       <div className="container">
@@ -13,6 +13,7 @@ const ShoppingCart = (props) => {
           <Product
             key={product.id}
             incrementHandle={onIncrement}
+            decrementHandle={onDecrement}
             product={product}
             handelDelete={onDelete}
           />

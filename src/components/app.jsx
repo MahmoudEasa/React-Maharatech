@@ -22,6 +22,7 @@ const App = () => {
       .then((res) => setProducts(res.data));
   }, []);
 
+  // (Add Or Delete) From Menu To Shopping Cart
   const handleAdd = (product) => {
     const oldProducts = [...products];
     // Clone
@@ -30,6 +31,7 @@ const App = () => {
     let index = allProducts.indexOf(product);
     allProducts[index] = { ...allProducts[index] };
     allProducts[index].isInCart = !allProducts[index].isInCart;
+    allProducts[index].count = allProducts[index].isInCart ? 1 : 0;
     // Set State
     setProducts(allProducts);
     axios
@@ -37,16 +39,15 @@ const App = () => {
         isInCart: !product.isInCart,
         name: product.name,
         price: product.price,
-        count: product.count,
+        count: allProducts[index].isInCart ? 1 : 0,
       })
-      // .then((res) => (allProducts[index] = res.data))
-      // .then(() => setProducts(allProducts))
       .catch(() => {
         product.isInCart ? toast("Cant Remove") : toast("Cant Add");
         setProducts(oldProducts);
       });
   };
 
+  // Delete Product In Admin
   const handleDelete = (e) => {
     const oldProducts = [...products];
 
@@ -59,19 +60,37 @@ const App = () => {
     });
   };
 
+  // Reset Counts In Shopping Cart
   const handleReset = () => {
+    const oldProducts = [...products];
     // Clone
     let productsAll = [...products];
+
     // Edit
-    productsAll = productsAll.map((p) => {
-      p.count = 0;
-      return p;
+    productsAll.map((product) => {
+      // product.isInCart = false;
+      product.count = 0;
+      return product;
     });
-    // Set State
     setProducts(productsAll);
+    // axios.put(`http://localhost:5000/products/${id}`, {
+    //   isInCart: false,
+    //   name: name[0],
+    //   price: price[0],
+    //   count: 0,
+    // });
+    //   .catch(() => {
+    //     toast("Cant Reset");
+    //     setProducts(oldProducts);
+    //   });
+    // Set State
+
+    // axios.put("http://localhost:5000/products", productsAll);
   };
 
+  // Increment Count In Shopping Cart
   const incrementHandle = (product) => {
+    const oldProducts = [...products];
     // Clone
     let productsAll = [...products];
     const index = productsAll.indexOf(product);
@@ -80,6 +99,41 @@ const App = () => {
     productsAll[index].count++;
     // Set State
     setProducts(productsAll);
+
+    axios
+      .put(`http://localhost:5000/products/${product.id}`, {
+        isInCart: product.isInCart,
+        name: product.name,
+        price: product.price,
+        count: product.count + 1,
+      })
+      .catch(() => {
+        toast("Error: Cannot Increment");
+        setProducts(oldProducts);
+      });
+  };
+  const decrementHandle = (product) => {
+    // Clone
+    const oldProducts = [...products];
+    let allProducts = [...products];
+    // Edit
+    let index = allProducts.indexOf(product);
+    allProducts[index] = { ...allProducts[index] };
+    allProducts[index].count--;
+    // Set State
+    setProducts(allProducts);
+
+    axios
+      .put(`http://localhost:5000/products/${product.id}`, {
+        isInCart: product.isInCart,
+        name: product.name,
+        price: product.price,
+        count: product.count - 1,
+      })
+      .catch(() => {
+        toast("Error: Cannot Decrement");
+        setProducts(oldProducts);
+      });
   };
   return (
     <React.Fragment>
@@ -99,6 +153,7 @@ const App = () => {
               <ShoppingCart
                 products={products.filter((p) => p.isInCart)}
                 onIncrement={incrementHandle}
+                onDecrement={decrementHandle}
                 onDelete={handleAdd}
                 onReset={handleReset}
               />

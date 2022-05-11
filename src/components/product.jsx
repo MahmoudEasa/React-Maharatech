@@ -19,10 +19,16 @@ const Product = (props) => {
       <div className="col">
         <span className={getClasses()}>{product.count}</span>
         <button
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-sm m-1"
           onClick={() => props.incrementHandle(product)}
         >
           +
+        </button>
+        <button
+          className="btn btn-primary btn-sm"
+          onClick={() => props.decrementHandle(product)}
+        >
+          -
         </button>
         <span
           style={{ cursor: "pointer" }}
