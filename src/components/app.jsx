@@ -15,7 +15,6 @@ import AddProduct from "./AddProduct";
 
 const App = () => {
   const [products, setProducts] = useState([]);
-
   useEffect(() => {
     axios
       .get("http://localhost:5000/products")
@@ -24,6 +23,7 @@ const App = () => {
 
   // (Add Or Delete) From Menu To Shopping Cart
   const handleAdd = (product) => {
+    // A copy of the original in case of error
     const oldProducts = [...products];
     // Clone
     let allProducts = [...products];
@@ -32,6 +32,7 @@ const App = () => {
     allProducts[index] = { ...allProducts[index] };
     allProducts[index].isInCart = !allProducts[index].isInCart;
     allProducts[index].count = allProducts[index].isInCart ? 1 : 0;
+
     // Set State
     setProducts(allProducts);
     axios
@@ -42,50 +43,45 @@ const App = () => {
         count: allProducts[index].isInCart ? 1 : 0,
       })
       .catch(() => {
-        product.isInCart ? toast("Cant Remove") : toast("Cant Add");
+        product.isInCart ? toast("Cannot Remove") : toast("Cannot Add");
         setProducts(oldProducts);
       });
   };
 
   // Delete Product In Admin
   const handleDelete = (e) => {
+    // A copy of the original in case of error
     const oldProducts = [...products];
 
     const productsFilter = products.filter((p) => p.id !== e.id);
     setProducts(productsFilter);
 
     axios.delete(`http://localhost:5000/products/${e.id}`).catch(() => {
-      toast.error("Cant Delete");
+      toast.error("Cannot Delete");
       setProducts(oldProducts);
     });
   };
 
   // Reset Counts In Shopping Cart
   const handleReset = () => {
-    const oldProducts = [...products];
     // Clone
     let productsAll = [...products];
-
     // Edit
     productsAll.map((product) => {
-      // product.isInCart = false;
+      product.isInCart = false;
       product.count = 0;
+      axios
+        .patch(`http://localhost:5000/products/${product.id}`, {
+          isInCart: false,
+          count: 0,
+        })
+        .catch(() => {
+          toast("Cannot Reset");
+          window.location.reload();
+        });
       return product;
     });
     setProducts(productsAll);
-    // axios.put(`http://localhost:5000/products/${id}`, {
-    //   isInCart: false,
-    //   name: name[0],
-    //   price: price[0],
-    //   count: 0,
-    // });
-    //   .catch(() => {
-    //     toast("Cant Reset");
-    //     setProducts(oldProducts);
-    //   });
-    // Set State
-
-    // axios.put("http://localhost:5000/products", productsAll);
   };
 
   // Increment Count In Shopping Cart
@@ -167,7 +163,10 @@ const App = () => {
             path="/admin"
             element={<Admin products={products} handleDelete={handleDelete} />}
           />
-          <Route path="/addProduct/:id" element={<AddProduct />} />
+          <Route
+            path="/addProduct/:id"
+            element={<AddProduct products={products} />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

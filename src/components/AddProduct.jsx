@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
-const AddProduct = (props) => {
+const AddProduct = ({ products }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const id = useParams().id;
@@ -17,7 +17,7 @@ const AddProduct = (props) => {
         setPrice(res.data.price);
       });
     }
-  }, []);
+  });
 
   const handleAdd = (e) => {
     e.preventDefault();
@@ -30,8 +30,10 @@ const AddProduct = (props) => {
           count: 0,
           isInCart: false,
         })
-        .then(() => navigate("/admin", { replace: true }))
-        .then(() => window.location.reload());
+        .then((res) => {
+          products.push(res.data);
+          navigate("/admin", { replace: true });
+        });
     } else {
       toast("Please Write All Data");
     }
@@ -48,10 +50,10 @@ const AddProduct = (props) => {
     };
 
     if (name.length > 0 && price.length > 0) {
-      axios
-        .put(`http://localhost:5000/products/${id}`, data)
-        .then(() => navigate("/admin", { replace: true }))
-        .then(() => window.location.reload());
+      axios.put(`http://localhost:5000/products/${id}`, data).then(() => {
+        navigate("/admin", { replace: true });
+        window.location.reload();
+      });
     } else {
       toast("Please Write All Data");
     }
