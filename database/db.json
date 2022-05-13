@@ -36,10 +36,10 @@
       "id": 7
     },
     {
-      "isInCart": false,
       "name": "test",
       "price": "10",
       "count": 0,
+      "isInCart": false,
       "id": 8
     }
   ],

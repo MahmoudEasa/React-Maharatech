@@ -17,7 +17,7 @@ const AddProduct = ({ products }) => {
         setPrice(res.data.price);
       });
     }
-  });
+  }, []);
 
   const handleAdd = (e) => {
     e.preventDefault();
